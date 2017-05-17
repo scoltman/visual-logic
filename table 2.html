@@ -1,0 +1,136 @@
+<html>
+<head>
+    
+    <meta charset="utf-8">
+	<title>logic: tables</title>
+</head>
+<body>
+<form action="" method="get" accept-charset="utf-8">
+
+
+	<input type="text" id="formula" value="P⊃Q,P:Q">
+	<p>
+<span id="">¬</span>
+<span id="">⋀</span>
+<span id="">⋁</span>
+<span id="">⊃</span>
+<span id="">∀</span>
+<span id="">∃</span>
+</p>
+
+	<p><input id="submit-button" type="submit" value="generate table"></p>
+</form>
+<div id="generated-table"></div>
+<script type="text/javascript" src="jq.js"></script>
+<script type="text/javascript" src="logic.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+var symbols = {
+    'implication' : ['⇒','→','⊃'],
+    'equivalence' : ['⇔','≡','↔'],
+    'negation' : {},
+    'conjunction' : {},
+    'disjunction' : {},
+    'universal' : {},
+    'existential' : {},
+};
+
+	function generateTable(data){
+		var tbl =  '<table>';
+        for(var row,i=0;row = data[i];i++){
+            tbl += '<tr>';
+            for(var col,j=0;col = row[j];j++){
+                tbl += '<td>'+col+'</td>';
+            }
+            tbl +='</tr>';
+        }
+		tbl += '</table>';
+		return tbl;
+	}
+    function condi(a,b){
+        return a && !b ? false : true;
+    }
+    function bicon(a,b){
+        return (a && b) || (!a && !b) ? false : true;
+    }
+    function conju(a,b){
+        return a && !b ? false : true;
+    }
+    function disju(a,b){
+    }
+ $('#submit-button').on('click', function(){
+
+    function makeVarTT(num){
+        var ttArr = [];
+        var bstr = '';
+        var ln;
+        while(num > bstr.length){
+                bstr += '1';
+        }
+        ln = parseInt(bstr, 2);
+
+        for(var i=ln;i>-1;i--){
+            var tAS = [];
+            var bS = i.toString(2);
+            if(bS.length<num){
+                var bSd = num-bS.length;
+                while(bSd > 0){
+                    bS = '0'+bS;
+                    bSd--;
+                }
+            }
+            for(var j=0,lnj=bS.length;j<lnj;j++){
+                tAS.push(parseInt(bS[j],10) === 1);
+            }
+            ttArr.push(tAS);
+        }
+        return ttArr;
+    }
+
+ 	var input = $('#formula').attr('value');
+ 	var vars = input.match(/[A-Z]?/g);
+ 	var pandq = input.split(':')
+ 	var premises = pandq[0].split(',');
+ 	var conclusion = [pandq[1]];
+ 	var variables =[];
+ 	var i,ln,j;
+    var tableData = [];
+    var tableHeader = [];
+    var varTT= [];
+    // unique variables e.g. P,Q,R
+ 	for(i=0,ln=vars.length;i<ln;i++){
+ 		if(vars[i].length > 0 && $.inArray(vars[i], variables) === -1){
+ 			variables.push(vars[i]);
+            tableHeader.push(vars[i]);
+ 		}
+ 	}
+
+    for(i=0,ln=premises.length;i<ln;i++){
+        tableHeader.push(premises[i] + ' (premise)');
+    } 
+    tableHeader.push(conclusion + ' (conclusion)');
+    tableData.push(tableHeader);
+    varTT = makeVarTT(variables.length);
+
+    for(i=0,ln=varTT.length;i<ln;i++){
+        var varCount = 0;
+        var tableRow = []
+        for(j=0,lnj=tableHeader.length;j<lnj;j++){
+            if(varCount < variables.length){
+                tableRow.push(varTT[i][varCount]? 'T' : 'F');
+                varCount++;
+            }else { 
+                tableRow.push('');
+            }
+        }
+        tableData.push(tableRow);
+    }
+    $('#generated-table').html(generateTable(tableData));
+ 	return false;
+ })
+});
+</script>
+</body>
+</html>

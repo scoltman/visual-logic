@@ -1,0 +1,119 @@
+<html>
+<head>
+    
+    <meta charset="utf-8">
+	<title>logic: tables</title>
+</head>
+<body>
+
+<script type="text/javascript" src="jq.js"></script>
+<script type="text/javascript" src="logic.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+/*
+var symbols = {
+    'condi' : ['⇒','→','⊃'],
+    'bicon' : ['⇔','≡','↔'],
+    'negat' : ['¬','˜','!'],
+    'conju' : ['∧','•','&'],
+    'disju' : ['∨','+','ǀǀ'],
+    'unive' : ['∀'],
+    'exist' : ['∃'],
+    'lbrac' : ['(','[']
+    'rbrac' : [')',']'],
+    'there' : [':']
+};
+*/
+var formula = [
+'P&(Q&R)',
+    'P&Q',
+    'P→(C&D)&(E&(F&G))',
+
+    'P⊃Q,P:Q'
+];
+
+var cform = formula[0];
+
+function condi(a,b){
+    return a && !b ? false : true;
+}
+function bicon(a,b){
+    return (a && b) || (!a && !b) ? false : true;
+}
+function negat(e){
+    return !e;
+}
+function conju(a,b){
+    return a && !b ? false : true;
+}
+function disju(a,b){
+
+}
+function unive(e){
+
+}
+function exist(e){
+
+}
+function brack(e){
+
+}
+
+var stackA = [];
+var stackB = [];
+var operation = [
+
+];
+
+function idChar(char){
+
+    if (['⇒','→','⊃'].indexOf(char) !== -1) return 'condi';
+    if (['⇔','≡','↔'].indexOf(char) !== -1) return  'bicon';
+    if (['∧','•','&'].indexOf(char) !== -1) return  'conju';
+    if (['∨','+','ǀǀ'].indexOf(char) !== -1) return  'disju';
+    if (['¬','˜','!'].indexOf(char) !== -1) return 'negat';
+    if (['(','['].indexOf(char) !== -1) return 'lbrac';
+    if ([')',']'].indexOf(char) !== -1) return 'rbrac';
+    if ([':'].indexOf(char) !== -1) return 'there';
+    if ([','].indexOf(char) !== -1) return 'separ';
+
+    return 'varib';
+}
+
+var lbrac = 0;
+var rbrac = 0;
+var formularObj = {};
+
+function objectify(formula){
+    var form = {
+       'operator' : '',
+       'primary'  : '',
+       'secondary': ''
+    }
+
+    for(var i=0; i<formula.length;i++){
+        //document.write(cform[i] + '<br>');
+        var tmpchar = idChar(formula[i]);
+        if (tmpchar === 'varib'){
+            if (form.primary.length > 0){
+               form.secondary = formula[i];
+            } else {
+                form.primary = formula[i];
+            }
+        } else if(tmpchar === 'conju'){
+            form.operator = 'conju';
+        } else if(tmpchar === 'lbrac'){
+
+        }
+    }
+
+    return form;
+}
+
+
+});
+</script>
+</body>
+</html>

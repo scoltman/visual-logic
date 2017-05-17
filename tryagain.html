@@ -1,0 +1,52 @@
+<html>
+<head>
+    
+    <meta charset="utf-8">
+	<title>logic: tables</title>
+</head>
+<body>
+
+<script type="text/javascript" src="jq.js"></script>
+<script type="text/javascript" src="logic.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+var formulas = [
+    'P&Q',
+    'P&(Q&R)',
+    '(Q&R)&P',
+    '(P&Q)&(R&S)',
+    '(P&Q)&(R&S)&(T&U)',
+    'P&(Q&(R&S))',
+    '((P&Q)&R)&S'
+]
+
+function interpret(form) {
+    var sofar = '';
+    console.log(form);
+    var start = null;
+    var lcount = 0;
+    var rcount = 0;
+    var i=0;
+    for(i=0;i<form.length;i++){
+        if(form[i] === '('){
+          lcount++;
+          if(!start){
+            start = i;
+          }
+        } else if (form[i] === ')'){
+          rcount++;
+          if(rcount === lcount) {
+            interpret(form.substring(start,i));
+          }
+        }
+    }
+}
+
+interpret(formulas[6]);
+
+});
+</script>
+</body>
+</html>

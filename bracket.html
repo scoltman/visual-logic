@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	<title>logic: tables</title>
+</head>
+<body>
+
+<script type="text/javascript" src="jq.js"></script>
+<script type="text/javascript" src="logic.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+    //P⋁(Q⋀R);
+    //P⋁(Q⋀(R⋀S))
+    logic.expandFormula('P⋁(Q⋀(R⋀S))');
+});
+</script>
+</body>
+</html>

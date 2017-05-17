@@ -1,0 +1,9 @@
+{
+  "name": "vislogic",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jasmine": "^2.1.0"
+  }
+}
